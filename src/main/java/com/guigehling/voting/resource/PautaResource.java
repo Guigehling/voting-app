@@ -15,18 +15,21 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 @Validated
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1")
+@RequiredArgsConstructor
 public class PautaResource {
 
-    private PautaService pautaService;
+    private final PautaService pautaService;
 
     @GetMapping
     public Page<PautaDTO> query(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") @Min(10) @Max(25) Integer size) {
+//            @RequestParam(defaultValue = "10") Integer size) {
         return pautaService.getPautas(PageRequest.of(page, size));
     }
 
 }
+
+
