@@ -2,7 +2,10 @@ package com.guigehling.voting.resource;
 
 import com.guigehling.voting.dto.AgendaDTO;
 import com.guigehling.voting.dto.SessionDTO;
+import com.guigehling.voting.dto.VoteDTO;
 import com.guigehling.voting.service.AgendaService;
+import com.guigehling.voting.service.SessionService;
+import com.guigehling.voting.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +26,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class AgendaResource {
 
     private final AgendaService agendaService;
+    private final SessionService sessionService;
+    private final VoteService voteService;
 
     @PostMapping
     @ResponseStatus(CREATED)
@@ -37,10 +42,16 @@ public class AgendaResource {
         return agendaService.query(PageRequest.of(page, size));
     }
 
-    @PostMapping("/{idAgenda}/session")
-    public SessionDTO openVotingSession(@PathVariable("idAgenda") @Positive Long personId,
-                                        @RequestParam(defaultValue = "60", required = false) @Positive Long duration) {
-        return null;
+    @PostMapping("/{idAgenda}/open-session")
+    public SessionDTO openVotingSession(@PathVariable("idAgenda") @Positive Long idAgenda,
+                                        @RequestParam(defaultValue = "60", required = false) @Positive Long minutesLong) {
+        return sessionService.openVotingSession(idAgenda, minutesLong);
+    }
+
+    @PostMapping("/vote")
+    @ResponseStatus(CREATED)
+    public VoteDTO createVote(@RequestBody(required = true) @Valid VoteDTO voteDTO) {
+        return voteService.registerVote(voteDTO);
     }
 
 }

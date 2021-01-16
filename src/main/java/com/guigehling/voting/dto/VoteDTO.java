@@ -20,7 +20,7 @@ public class VoteDTO {
     Long idVote;
     @Positive
     Long idAgenda;
-    @NotNull @NotBlank
+    @NotNull
     YesNoEnum vote;
     @NotNull @NotBlank
     String cpf;

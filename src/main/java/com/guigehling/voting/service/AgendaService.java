@@ -2,7 +2,7 @@ package com.guigehling.voting.service;
 
 import com.guigehling.voting.dto.AgendaDTO;
 import com.guigehling.voting.entity.Pauta;
-import com.guigehling.voting.repository.PautaRepository;
+import com.guigehling.voting.repository.AgendaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -16,15 +16,15 @@ import org.springframework.validation.annotation.Validated;
 @RequiredArgsConstructor
 public class AgendaService {
 
-    private final PautaRepository pautaRepository;
+    private final AgendaRepository agendaRepository;
 
     public AgendaDTO create(AgendaDTO agendaDTO) {
-        var pauta = pautaRepository.save(buildPauta(agendaDTO));
+        var pauta = agendaRepository.save(buildPauta(agendaDTO));
         return buildAgendaDTO(pauta);
     }
 
     public Page<AgendaDTO> query(final Pageable pageable) {
-        return pautaRepository.findAll(pageable).map(AgendaService::buildAgendaDTO);
+        return agendaRepository.findAll(pageable).map(AgendaService::buildAgendaDTO);
     }
 
     private static Pauta buildPauta(final AgendaDTO agendaDTO) {
