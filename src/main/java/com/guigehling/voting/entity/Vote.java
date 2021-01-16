@@ -10,7 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @With
-@Table(name = "pauta", schema = "voto")
+@Table(name = "voto", schema = "dbo")
 public class Vote {
 
     @Id
@@ -19,6 +19,7 @@ public class Vote {
     Long idPauta;
 //    @Enumerated(EnumType.STRING)
 //    private PersonTypeEnum type;
-//    String voto;
+    String voto;
+    String cpf;
 
 }

@@ -10,12 +10,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @With
-@Table(name = "pauta", schema = "pauta")
+@Table(name = "pauta", schema = "dbo")
 public class Pauta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idPauta;
-    Long descricao;
+    String descricao;
 
 }

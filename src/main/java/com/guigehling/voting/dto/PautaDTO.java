@@ -13,7 +13,7 @@ import lombok.With;
 public class PautaDTO {
 
     Long idPauta;
-    Long descricao;
+    String descricao;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class JacksonBuilder {
