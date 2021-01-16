@@ -6,18 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "pauta", schema = "dbo")
-public class Pauta {
+@Table(name = "sessao", schema = "dbo")
+public class Sessao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idSessao;
     private Long idPauta;
-    private String descricao;
+    private LocalDateTime dataAbertura;
+    private LocalDateTime dataEncerramento;
+    private Boolean status;
 
 }
