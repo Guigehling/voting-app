@@ -19,6 +19,10 @@ public class AgendaDTO {
     @NotNull @NotBlank
     String description;
 
+    Long totalVotes;
+    Long totalVotesFavour;
+    Long totalVotesAgainst;
+
     @JsonPOJOBuilder(withPrefix = "")
     public static class JacksonBuilder {
     }

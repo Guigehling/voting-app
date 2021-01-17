@@ -43,7 +43,7 @@ public class VoteService {
                 .map(this::buildSessionDTO)
                 .findAny();
 
-        return optSessionDTO.filter(dto -> validateSessionDate(dto.getClosingDate())).isPresent();
+        return optSessionDTO.filter(sessionDTO -> validateSessionDate(sessionDTO.getClosingDate())).isPresent();
     }
 
     private static boolean validateSessionDate(LocalDateTime closingDate) {

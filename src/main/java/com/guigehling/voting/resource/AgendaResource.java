@@ -42,6 +42,11 @@ public class AgendaResource {
         return agendaService.query(PageRequest.of(page, size));
     }
 
+    @GetMapping("/{idAgenda}/details")
+    public AgendaDTO openVotingSession(@PathVariable("idAgenda") @Positive Long idAgenda) {
+        return agendaService.getAgendaDetails(idAgenda);
+    }
+
     @PostMapping("/{idAgenda}/open-session")
     public SessionDTO openVotingSession(@PathVariable("idAgenda") @Positive Long idAgenda,
                                         @RequestParam(defaultValue = "60", required = false) @Positive Long minutesLong) {
