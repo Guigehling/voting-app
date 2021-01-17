@@ -28,11 +28,21 @@ public class VoteService {
     private final SessionRepository sessionRepository;
 
     public VoteDTO registerVote(VoteDTO voteDTO) {
+        if (hasVoted(voteDTO))
+            throw new BusinessException(HttpStatus.NOT_ACCEPTABLE,
+                    String.format("CPF %s já votou na pauta %s.", voteDTO.getCpf(), voteDTO.getIdAgenda()));
+
         if (!validateSession(voteDTO.getIdAgenda()))
-            throw new BusinessException(HttpStatus.PRECONDITION_FAILED, String.format("Não a sessão ativa para a pauta %s.", voteDTO.getIdAgenda()));
+            throw new BusinessException(HttpStatus.NOT_ACCEPTABLE,
+                    String.format("Não a sessão ativa para a pauta %s.", voteDTO.getIdAgenda()));
 
         var vote = voteRepository.save(buildVote(voteDTO));
         return voteDTO.withIdVote(vote.getIdVoto());
+    }
+
+    private boolean hasVoted(VoteDTO voteDTO) {
+        var optVote = voteRepository.findFirstByIdPautaAndCpf(voteDTO.getIdAgenda(), voteDTO.getCpf());
+        return optVote.isPresent();
     }
 
     private boolean validateSession(Long idAgenda) {

@@ -53,12 +53,6 @@ public class AgendaResource {
         return sessionService.openVotingSession(idAgenda, minutesLong);
     }
 
-    @PostMapping("/vote")
-    @ResponseStatus(CREATED)
-    public VoteDTO createVote(@RequestBody(required = true) @Valid VoteDTO voteDTO) {
-        return voteService.registerVote(voteDTO);
-    }
-
 }
 
 
