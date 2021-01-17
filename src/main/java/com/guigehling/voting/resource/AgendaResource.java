@@ -1,8 +1,8 @@
 package com.guigehling.voting.resource;
 
 import com.guigehling.voting.dto.AgendaDTO;
+import com.guigehling.voting.dto.AgendaDetailsDTO;
 import com.guigehling.voting.dto.SessionDTO;
-import com.guigehling.voting.dto.VoteDTO;
 import com.guigehling.voting.service.AgendaService;
 import com.guigehling.voting.service.SessionService;
 import com.guigehling.voting.service.VoteService;
@@ -42,16 +42,15 @@ public class AgendaResource {
         return agendaService.query(PageRequest.of(page, size));
     }
 
+    @GetMapping("/{idAgenda}/details")
+    public AgendaDetailsDTO openVotingSession(@PathVariable("idAgenda") @Positive Long idAgenda) {
+        return agendaService.getAgendaDetails(idAgenda);
+    }
+
     @PostMapping("/{idAgenda}/open-session")
     public SessionDTO openVotingSession(@PathVariable("idAgenda") @Positive Long idAgenda,
                                         @RequestParam(defaultValue = "60", required = false) @Positive Long minutesLong) {
         return sessionService.openVotingSession(idAgenda, minutesLong);
-    }
-
-    @PostMapping("/vote")
-    @ResponseStatus(CREATED)
-    public VoteDTO createVote(@RequestBody(required = true) @Valid VoteDTO voteDTO) {
-        return voteService.registerVote(voteDTO);
     }
 
 }
