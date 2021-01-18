@@ -10,22 +10,25 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
-@Component
 @Getter
+@Component
 public class AmqpHelper {
 
     private final AmqpAdmin amqpAdmin;
     private final Exchange exchange;
 
-    @Value("${rabbitmq.queue.session}")
+    @Value("${spring.rabbitmq.session.queue}")
     private String sessionQueue;
-    @Value("${rabbitmq.route.session}")
+    @Value("${spring.rabbitmq.session.route}")
     private String sessionRoute;
 
-    @Value("${rabbitmq.route.result}")
+    @Value("${spring.rabbitmq.result.route}")
     private String resultRoute;
-    @Value("${rabbitmq.queue.result}")
+    @Value("${spring.rabbitmq.result.queue}")
     private String resultqueue;
+
+    @Value("${spring.rabbitmq.delay.default}")
+    private Integer delayDefault;
 
     public AmqpHelper(AmqpAdmin amqpAdmin, Exchange exchange) {
         this.amqpAdmin = amqpAdmin;

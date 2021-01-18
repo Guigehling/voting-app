@@ -44,6 +44,19 @@ public class SessionService {
         return buildSessionDTO(sessionEntity);
     }
 
+    public SessionDTO closeSession(Long idSession) {
+        var sessionEntity = sessionRepository.findById(idSession).orElseThrow();
+
+        if (validateSessionDate(sessionEntity.getDataEncerramento()))
+            return buildSessionDTO(sessionEntity);
+
+        return buildSessionDTO(sessionRepository.save(sessionEntity.withStatus(false)));
+    }
+
+    private static boolean validateSessionDate(LocalDateTime closingDate) {
+        return closingDate.compareTo(LocalDateTime.now(ZONE_ID)) > 0;
+    }
+
     private static SessionDTO buildSessionDTO(final Sessao session) {
         return SessionDTO.builder()
                 .idSession(session.getIdSessao())
@@ -54,7 +67,7 @@ public class SessionService {
                 .build();
     }
 
-    private void sendMessage(Long idSession) {
+    public void sendMessage(Long idSession) {
         rabbitTemplate.convertAndSend(exchange.getName(), amqpHelper.getSessionRoute(), idSession);
     }
 
