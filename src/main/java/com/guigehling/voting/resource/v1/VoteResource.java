@@ -1,4 +1,4 @@
-package com.guigehling.voting.resource;
+package com.guigehling.voting.resource.v1;
 
 import com.guigehling.voting.dto.VoteDTO;
 import com.guigehling.voting.service.VoteService;
@@ -20,8 +20,8 @@ public class VoteResource {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public VoteDTO createVote(@RequestBody(required = true) @Valid VoteDTO voteDTO) {
-        return voteService.registerVote(voteDTO);
+    public void registerVote(@RequestBody(required = true) @Valid VoteDTO voteDTO) {
+        voteService.registerVote(voteDTO);
     }
 
 }

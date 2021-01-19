@@ -12,9 +12,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @Service
@@ -40,7 +41,7 @@ public class AgendaService {
         if (optAgenda.isPresent())
             return countAllVotes(optAgenda.get());
 
-        throw new BusinessException(HttpStatus.NOT_FOUND, String.format("Não encotnrada pauta para o id %s.", idAgenda));
+        throw new BusinessException(NOT_FOUND);
     }
 
     private AgendaDetailsDTO countAllVotes(AgendaDetailsDTO agendaDetailsDTO) {
