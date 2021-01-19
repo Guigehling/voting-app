@@ -6,8 +6,8 @@ import com.guigehling.voting.enumeration.YesNoEnum;
 import lombok.Builder;
 import lombok.Value;
 import lombok.With;
+import org.hibernate.validator.constraints.br.CPF;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -22,7 +22,7 @@ public class VoteDTO {
     Long idAgenda;
     @NotNull
     YesNoEnum vote;
-    @NotNull @NotBlank
+    @CPF
     String cpf;
 
     @JsonPOJOBuilder(withPrefix = "")

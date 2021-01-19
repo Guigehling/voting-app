@@ -1,11 +1,10 @@
-package com.guigehling.voting.resource;
+package com.guigehling.voting.resource.v1;
 
 import com.guigehling.voting.dto.AgendaDTO;
 import com.guigehling.voting.dto.AgendaDetailsDTO;
 import com.guigehling.voting.dto.SessionDTO;
 import com.guigehling.voting.service.AgendaService;
 import com.guigehling.voting.service.SessionService;
-import com.guigehling.voting.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +26,6 @@ public class AgendaResource {
 
     private final AgendaService agendaService;
     private final SessionService sessionService;
-    private final VoteService voteService;
 
     @PostMapping
     @ResponseStatus(CREATED)
@@ -43,7 +41,7 @@ public class AgendaResource {
     }
 
     @GetMapping("/{idAgenda}/details")
-    public AgendaDetailsDTO openVotingSession(@PathVariable("idAgenda") @Positive Long idAgenda) {
+    public AgendaDetailsDTO getAgendaDetails(@PathVariable("idAgenda") @Positive Long idAgenda) {
         return agendaService.getAgendaDetails(idAgenda);
     }
 
