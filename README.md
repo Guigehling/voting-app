@@ -37,10 +37,11 @@ Você pode acessar este serviço em https://www.cloudamqp.com/
 
 ## Releases
 
-* 0.0.1
+* 0.0.1-SNAPSHOT
     * Commit inicial, contendo o esboço do projeto.
-* 1.0.0
+* 0.0.2-SNAPSHOT
     * Lançamento da primeira versão do projeto contendo todas as funcionalidades básicas.
+    * Esta versão ainda necessida de ajustes, como citados nos próximos passos.
 
 ## Próximos Passos
 

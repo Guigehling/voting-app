@@ -5,7 +5,7 @@
 
     <groupId>com.guigehling</groupId>
     <artifactId>voting</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>voting</name>
     <description>Sistema para gestão de votos</description>
 
