@@ -34,12 +34,12 @@ public class VoteService {
     private final UserIntegration userIntegration;
     private final SessionRepository sessionRepository;
 
-    public void registerVote(VoteDTO voteDTO) throws BusinessException {
-        if (check(voteDTO))
+    public void registerVote(VoteDTO voteDTO) {
+        if (validateVotingRequirements(voteDTO))
             voteRepository.save(buildVote(voteDTO));
     }
 
-    private boolean check(VoteDTO voteDTO) {
+    private boolean validateVotingRequirements(VoteDTO voteDTO) {
         if (validateHasVoted(voteDTO))
             throw new BusinessException(PRECONDITION_FAILED, messageHelper.get(ERROR_VOTE_USER_VOTED, voteDTO.getCpf(), voteDTO.getIdAgenda()));
 
@@ -68,10 +68,6 @@ public class VoteService {
         return optSessionDTO.filter(sessionDTO -> validateSessionDate(sessionDTO.getClosingDate())).isEmpty();
     }
 
-    private boolean filterOpenSessions(Sessao sessao) {
-        return sessao.getStatus();
-    }
-
     private static boolean validateSessionDate(LocalDateTime closingDate) {
         return closingDate.compareTo(LocalDateTime.now(ZONE_ID)) > 0;
     }
@@ -79,6 +75,10 @@ public class VoteService {
     private boolean validateIsUnable(String cpf) {
         var result = userIntegration.isAble(cpf);
         return result.getStatus().equals(UNABLE_TO_VOTE);
+    }
+
+    private boolean filterOpenSessions(Sessao sessao) {
+        return sessao.getStatus();
     }
 
     private Voto buildVote(VoteDTO voteDTO) {

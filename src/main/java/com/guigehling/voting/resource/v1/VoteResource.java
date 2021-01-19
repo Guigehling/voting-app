@@ -1,7 +1,6 @@
 package com.guigehling.voting.resource.v1;
 
 import com.guigehling.voting.dto.VoteDTO;
-import com.guigehling.voting.exception.BusinessException;
 import com.guigehling.voting.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -21,7 +20,7 @@ public class VoteResource {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public void registerVote(@RequestBody(required = true) @Valid VoteDTO voteDTO) throws BusinessException {
+    public void registerVote(@RequestBody(required = true) @Valid VoteDTO voteDTO) {
         voteService.registerVote(voteDTO);
     }
 
