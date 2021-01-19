@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: voting-model
+      author: guigehling
+      changes:
+        - createTable:
+            tableName: pauta
+            columns:
+              - column:
+                  name: id_pauta
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: descricao
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: sessao
+            columns:
+              - column:
+                  name: id_sessao
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: id_pauta
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: data_abertura
+                  type: datetime
+              - column:
+                  name: data_encerramento
+                  type: datetime
+              - column:
+                  name: status
+                  type: bit
+        - createTable:
+            tableName: voto
+            columns:
+              - column:
+                  name: id_voto
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: id_pauta
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: voto
+                  type: varchar(3)
+              - column:
+                  name: cpf
+                  type: varchar(11)
