@@ -4,7 +4,7 @@
 [![Java Version][java-image]][npm-url]
 [![spring Version][spring-image]][travis-url]
 
-Está API é executa a gestão de pautas as quais passaram por um período de votação chamado de sessão, a qual tem data de início e fim.
+Esta API executa a gestão de pautas as quais possuem por um período de votação chamado de sessão. Cada sessão possui uma data de início e fim.
 
 Além de gerir as pautas e a duração das sessões, esta API também controla os votos recebidos, executando validações dos dados do votante e da sessão de votação.
 
@@ -20,10 +20,10 @@ Esta API pode ser usada para gerir votos em variadas situações, como por exemp
 Para executar esta aplicação primeiramente realize a complicação do projeto com o Maven usando o segunte comando.
 
 ```sh
-npm install
+mvn install
 ```
 ### Banco Relacional
-A aplicação utiliza um banco de dados SQLServer para gravação das informações, o banco foi disponibilizado na AWS, logo não é necessário subir um banco de dados local.
+A aplicação utiliza um banco de dados SQLServer para gravação das informações, o banco foi disponibilizado na AWS, logo, não é necessário subir um banco de dados local.
 
 Para versionamento da estrutura de banco de dados foi utilizado o Liquibase, então caso queira recriar as estruturas basta alterar a propriedade abaixo para **TRUE** no arquivo application.properties
 
