@@ -35,6 +35,10 @@ Foi utilizado o RabbitMQ como nosso message-broker, para facilitar na utilizaç�
 
 Você pode acessar este serviço em https://www.cloudamqp.com/
 
+### Documentação (Swagger)
+
+A documentação dos serviços desta API estão disponiveis em uma pagina com o swagger da mesma, para acesso primerio é necessario subir a aplicação e em seguida acessar o link http://localhost:8081/api/voting/swagger-ui/
+
 ## Releases
 
 * 0.0.1-SNAPSHOT
@@ -45,7 +49,7 @@ Você pode acessar este serviço em https://www.cloudamqp.com/
 
 ## Próximos Passos
 
-Algumas evoluções desejadas:
+Algumas evoluções desejadas para as próximas versões:
 
 * Utilizar o RabbitMQ em um servidor que permita a instalação de plugins
 
