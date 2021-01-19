@@ -1,9 +1,6 @@
 package com.guigehling.voting.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Builder
+@With
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "sessao", schema = "dbo")
