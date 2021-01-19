@@ -4,7 +4,7 @@ databaseChangeLog:
       author: guigehling
       changes:
         - createTable:
-            tableName: pauta.pauta
+            tableName: pauta
             columns:
               - column:
                   name: id_pauta
@@ -14,12 +14,36 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: descicao
+                  name: descricao
                   type: varchar(200)
                   constraints:
                     nullable: false
         - createTable:
-            tableName: pauta.voto
+            tableName: sessao
+            columns:
+              - column:
+                  name: id_sessao
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: id_pauta
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: data_abertura
+                  type: datetime
+              - column:
+                  name: data_encerramento
+                  type: datetime
+              - column:
+                  name: status
+                  type: bit
+        - createTable:
+            tableName: voto
             columns:
               - column:
                   name: id_voto
@@ -39,3 +63,19 @@ databaseChangeLog:
               - column:
                   name: cpf
                   type: varchar(11)
+  - changeSet:
+      id: voting-foreign-key
+      author: guigehling
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id_pauta
+            baseTableName: sessao
+            constraintName: fk_sessao_pauta
+            referencedColumnNames: id_pauta
+            referencedTableName: pauta
+        - addForeignKeyConstraint:
+            baseColumnNames: id_pauta
+            baseTableName: voto
+            constraintName: fk_voto_pauta
+            referencedColumnNames: id_pauta
+            referencedTableName: pauta

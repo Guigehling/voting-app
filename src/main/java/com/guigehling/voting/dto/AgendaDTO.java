@@ -6,14 +6,18 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.With;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @With
 @Value
-@JsonDeserialize(builder = PautaDTO.JacksonBuilder.class)
+@JsonDeserialize(builder = AgendaDTO.JacksonBuilder.class)
 @Builder(builderClassName = "JacksonBuilder")
-public class PautaDTO {
+public class AgendaDTO {
 
-    Long idPauta;
-    Long descricao;
+    Long idAgenda;
+    @NotNull @NotBlank
+    String description;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class JacksonBuilder {
