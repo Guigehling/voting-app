@@ -49,7 +49,7 @@ public class AgendaResource {
 
     @PostMapping("/{idAgenda}/open-session")
     public SessionDTO openVotingSession(@PathVariable("idAgenda") @Positive Long idAgenda,
-                                        @RequestParam(defaultValue = "60", required = false) @Positive Long minutesLong) {
+                                        @RequestParam(defaultValue = "1", required = false) @Positive Long minutesLong) {
         return sessionService.openVotingSession(idAgenda, minutesLong);
     }
 

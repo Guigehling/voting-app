@@ -5,6 +5,7 @@ import com.guigehling.voting.dto.VoteDTO;
 import com.guigehling.voting.entity.Sessao;
 import com.guigehling.voting.entity.Voto;
 import com.guigehling.voting.exception.BusinessException;
+import com.guigehling.voting.integration.user.UserIntegration;
 import com.guigehling.voting.repository.SessionRepository;
 import com.guigehling.voting.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,8 @@ import org.springframework.validation.annotation.Validated;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import static com.guigehling.voting.integration.user.enumeration.UserStatusEnum.UNABLE_TO_VOTE;
+
 @Slf4j
 @Service
 @Validated
@@ -25,14 +28,19 @@ public class VoteService {
     private static final ZoneId ZONE_ID = ZoneId.of("America/Sao_Paulo");
 
     private final VoteRepository voteRepository;
+    private final UserIntegration userIntegration;
     private final SessionRepository sessionRepository;
 
     public VoteDTO registerVote(VoteDTO voteDTO) {
-        if (hasVoted(voteDTO))
+        if (validateHasVoted(voteDTO))
             throw new BusinessException(HttpStatus.NOT_ACCEPTABLE,
                     String.format("CPF %s já votou na pauta %s.", voteDTO.getCpf(), voteDTO.getIdAgenda()));
 
-        if (!validateSession(voteDTO.getIdAgenda()))
+        if (validateSessionIsClosed(voteDTO.getIdAgenda()))
+            throw new BusinessException(HttpStatus.NOT_ACCEPTABLE,
+                    String.format("Não a sessão ativa para a pauta %s.", voteDTO.getIdAgenda()));
+
+        if (validateIsUnable(voteDTO.getCpf()))
             throw new BusinessException(HttpStatus.NOT_ACCEPTABLE,
                     String.format("Não a sessão ativa para a pauta %s.", voteDTO.getIdAgenda()));
 
@@ -40,12 +48,17 @@ public class VoteService {
         return voteDTO.withIdVote(vote.getIdVoto());
     }
 
-    private boolean hasVoted(VoteDTO voteDTO) {
+    private boolean validateIsUnable(String cpf) {
+        var result = userIntegration.isAble(cpf);
+        return result.getStatus().equals(UNABLE_TO_VOTE);
+    }
+
+    private boolean validateHasVoted(VoteDTO voteDTO) {
         var optVote = voteRepository.findFirstByIdPautaAndCpf(voteDTO.getIdAgenda(), voteDTO.getCpf());
         return optVote.isPresent();
     }
 
-    private boolean validateSession(Long idAgenda) {
+    private boolean validateSessionIsClosed(Long idAgenda) {
         var session = sessionRepository.findByIdPauta(idAgenda);
 
         var optSessionDTO = session.stream()
@@ -53,15 +66,15 @@ public class VoteService {
                 .map(this::buildSessionDTO)
                 .findAny();
 
-        return optSessionDTO.filter(sessionDTO -> validateSessionDate(sessionDTO.getClosingDate())).isPresent();
-    }
-
-    private static boolean validateSessionDate(LocalDateTime closingDate) {
-        return closingDate.compareTo(LocalDateTime.now(ZONE_ID)) > 0;
+        return optSessionDTO.filter(sessionDTO -> validateSessionDate(sessionDTO.getClosingDate())).isEmpty();
     }
 
     private boolean filterOpenSessions(Sessao sessao) {
         return sessao.getStatus();
+    }
+
+    private static boolean validateSessionDate(LocalDateTime closingDate) {
+        return closingDate.compareTo(LocalDateTime.now(ZONE_ID)) > 0;
     }
 
     private Voto buildVote(VoteDTO voteDTO) {
