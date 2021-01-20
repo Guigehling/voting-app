@@ -3,7 +3,7 @@ package com.guigehling.voting.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guigehling.voting.config.AmqpConfig;
 import com.guigehling.voting.dto.SessionDTO;
-import com.guigehling.voting.entity.Sessao;
+import com.guigehling.voting.entity.Session;
 import com.guigehling.voting.exception.BusinessException;
 import com.guigehling.voting.helper.MessageHelper;
 import com.guigehling.voting.repository.SessionRepository;
@@ -42,14 +42,14 @@ public class SessionService {
         try {
             var createdDate = LocalDateTime.now(ZONE_ID);
 
-            var sessionEntity = sessionRepository.save(Sessao.builder()
-                    .idPauta(idAgenda)
-                    .dataAbertura(createdDate)
-                    .dataEncerramento(createdDate.plusMinutes(minutesLong))
+            var sessionEntity = sessionRepository.save(Session.builder()
+                    .idAgenda(idAgenda)
+                    .openingDate(createdDate)
+                    .closingDate(createdDate.plusMinutes(minutesLong))
                     .status(TRUE)
                     .build());
 
-            amqpUtil.sendMessage(amqpConfig.getVotingDirectExchange(), amqpConfig.getSessionRoute(), sessionEntity.getIdSessao());
+            amqpUtil.sendMessage(amqpConfig.getVotingDirectExchange(), amqpConfig.getSessionRoute(), sessionEntity.getIdSession());
             return buildSessionDTO(sessionEntity);
         } catch (Exception e) {
             log.error(messageHelper.get(ERROR_SESSION_OPEN, idAgenda), e.getMessage(), e);
@@ -77,7 +77,7 @@ public class SessionService {
         try {
             var sessionEntity = sessionRepository.findById(idSession).orElseThrow();
 
-            if (validateSessionDate(sessionEntity.getDataEncerramento()))
+            if (validateSessionDate(sessionEntity.getClosingDate()))
                 return buildSessionDTO(sessionEntity);
 
             return buildSessionDTO(sessionRepository.save(sessionEntity.withStatus(false)));
@@ -96,12 +96,12 @@ public class SessionService {
         amqpUtil.sendMessage(amqpConfig.getVotingDirectExchange(), amqpConfig.getResultRoute(), agendaDetail);
     }
 
-    private static SessionDTO buildSessionDTO(final Sessao session) {
+    private static SessionDTO buildSessionDTO(final Session session) {
         return SessionDTO.builder()
-                .idSession(session.getIdSessao())
-                .idAgenda(session.getIdPauta())
-                .openingDate(session.getDataAbertura())
-                .closingDate(session.getDataEncerramento())
+                .idSession(session.getIdSession())
+                .idAgenda(session.getIdAgenda())
+                .openingDate(session.getOpeningDate())
+                .closingDate(session.getClosingDate())
                 .status(session.getStatus())
                 .build();
     }

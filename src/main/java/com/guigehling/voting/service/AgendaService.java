@@ -2,8 +2,8 @@ package com.guigehling.voting.service;
 
 import com.guigehling.voting.dto.AgendaDTO;
 import com.guigehling.voting.dto.AgendaDetailsDTO;
-import com.guigehling.voting.entity.Pauta;
-import com.guigehling.voting.entity.Voto;
+import com.guigehling.voting.entity.Agenda;
+import com.guigehling.voting.entity.Vote;
 import com.guigehling.voting.enumeration.YesNoEnum;
 import com.guigehling.voting.exception.BusinessException;
 import com.guigehling.voting.repository.AgendaRepository;
@@ -45,7 +45,7 @@ public class AgendaService {
     }
 
     private AgendaDetailsDTO countAllVotes(AgendaDetailsDTO agendaDetailsDTO) {
-        var votes = voteRepository.findByIdPauta(agendaDetailsDTO.getIdAgenda());
+        var votes = voteRepository.findByIdAgenda(agendaDetailsDTO.getIdAgenda());
 
         var totalVotesFavour = votes.stream()
                 .filter(this::filterInFavourVotes)
@@ -61,31 +61,31 @@ public class AgendaService {
                 .withTotalVotesAgainst(totalVotesAgainst);
     }
 
-    private boolean filterInFavourVotes(Voto voto) {
-        return voto.getVoto().equals(YesNoEnum.YES);
+    private boolean filterInFavourVotes(Vote vote) {
+        return vote.getVote().equals(YesNoEnum.YES);
     }
 
-    private boolean filterAgainstVotes(Voto voto) {
-        return voto.getVoto().equals(YesNoEnum.NO);
+    private boolean filterAgainstVotes(Vote vote) {
+        return vote.getVote().equals(YesNoEnum.NO);
     }
 
-    private static Pauta buildPauta(final AgendaDTO agendaDTO) {
-        return Pauta.builder()
-                .descricao(agendaDTO.getDescription())
+    private static Agenda buildPauta(final AgendaDTO agendaDTO) {
+        return Agenda.builder()
+                .description(agendaDTO.getDescription())
                 .build();
     }
 
-    private static AgendaDTO buildAgendaDTO(final Pauta pauta) {
+    private static AgendaDTO buildAgendaDTO(final Agenda agenda) {
         return AgendaDTO.builder()
-                .idAgenda(pauta.getIdPauta())
-                .description(pauta.getDescricao())
+                .idAgenda(agenda.getIdAgenda())
+                .description(agenda.getDescription())
                 .build();
     }
 
-    private static AgendaDetailsDTO buildAgendaDetailsDTO(final Pauta pauta) {
+    private static AgendaDetailsDTO buildAgendaDetailsDTO(final Agenda agenda) {
         return AgendaDetailsDTO.builder()
-                .idAgenda(pauta.getIdPauta())
-                .description(pauta.getDescricao())
+                .idAgenda(agenda.getIdAgenda())
+                .description(agenda.getDescription())
                 .build();
     }
 
