@@ -1,17 +1,19 @@
 package com.guigehling.voting.repository;
 
-import com.guigehling.voting.entity.Pauta;
-import com.guigehling.voting.entity.Voto;
+import com.guigehling.voting.entity.Agenda;
+import com.guigehling.voting.entity.Vote;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface VoteRepository extends JpaRepository<Voto, Long>, JpaSpecificationExecutor<Pauta> {
+@Repository
+public interface VoteRepository extends JpaRepository<Vote, Long>, JpaSpecificationExecutor<Agenda> {
 
-    List<Voto> findByIdPauta(Long idAgenda);
+    List<Vote> findByIdAgenda(Long idAgenda);
 
-    Optional<Voto> findFirstByIdPautaAndCpf(Long idAgenda, String cpf);
+    Optional<Vote> findFirstByIdAgendaAndCpf(Long idAgenda, String cpf);
 
 }

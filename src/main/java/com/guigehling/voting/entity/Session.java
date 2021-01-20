@@ -12,14 +12,22 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "sessao", schema = "dbo")
-public class Sessao {
+public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idSessao;
-    private Long idPauta;
-    private LocalDateTime dataAbertura;
-    private LocalDateTime dataEncerramento;
+    @Column(name = "id_sessao")
+    private Long idSession;
+
+    @Column(name = "id_pauta")
+    private Long idAgenda;
+
+    @Column(name = "data_abertura")
+    private LocalDateTime openingDate;
+
+    @Column(name = "data_encerramento")
+    private LocalDateTime closingDate;
+
     private Boolean status;
 
 }

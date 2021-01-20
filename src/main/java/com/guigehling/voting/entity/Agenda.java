@@ -1,6 +1,5 @@
 package com.guigehling.voting.entity;
 
-import com.guigehling.voting.enumeration.YesNoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,15 +12,15 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "voto", schema = "dbo")
-public class Voto {
+@Table(name = "pauta", schema = "dbo")
+public class Agenda {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idVoto;
-    private Long idPauta;
-    @Enumerated(EnumType.STRING)
-    private YesNoEnum voto;
-    private String cpf;
+    @Column(name = "id_pauta")
+    private Long idAgenda;
+
+    @Column(name = "descricao")
+    private String description;
 
 }

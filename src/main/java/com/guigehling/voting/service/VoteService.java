@@ -2,8 +2,8 @@ package com.guigehling.voting.service;
 
 import com.guigehling.voting.dto.SessionDTO;
 import com.guigehling.voting.dto.VoteDTO;
-import com.guigehling.voting.entity.Sessao;
-import com.guigehling.voting.entity.Voto;
+import com.guigehling.voting.entity.Session;
+import com.guigehling.voting.entity.Vote;
 import com.guigehling.voting.exception.BusinessException;
 import com.guigehling.voting.helper.MessageHelper;
 import com.guigehling.voting.integration.user.UserIntegration;
@@ -53,12 +53,12 @@ public class VoteService {
     }
 
     private boolean validateHasVoted(VoteDTO voteDTO) {
-        var optVote = voteRepository.findFirstByIdPautaAndCpf(voteDTO.getIdAgenda(), voteDTO.getCpf());
+        var optVote = voteRepository.findFirstByIdAgendaAndCpf(voteDTO.getIdAgenda(), voteDTO.getCpf());
         return optVote.isPresent();
     }
 
     private boolean validateSessionIsClosed(Long idAgenda) {
-        var session = sessionRepository.findByIdPauta(idAgenda);
+        var session = sessionRepository.findByIdAgenda(idAgenda);
 
         var optSessionDTO = session.stream()
                 .filter(this::filterOpenSessions)
@@ -77,24 +77,24 @@ public class VoteService {
         return result.getStatus().equals(UNABLE_TO_VOTE);
     }
 
-    private boolean filterOpenSessions(Sessao sessao) {
-        return sessao.getStatus();
+    private boolean filterOpenSessions(Session session) {
+        return session.getStatus();
     }
 
-    private Voto buildVote(VoteDTO voteDTO) {
-        return Voto.builder()
-                .idPauta(voteDTO.getIdAgenda())
+    private Vote buildVote(VoteDTO voteDTO) {
+        return Vote.builder()
+                .idAgenda(voteDTO.getIdAgenda())
                 .cpf(voteDTO.getCpf())
-                .voto(voteDTO.getVote())
+                .vote(voteDTO.getVote())
                 .build();
     }
 
-    private SessionDTO buildSessionDTO(Sessao session) {
+    private SessionDTO buildSessionDTO(Session session) {
         return SessionDTO.builder()
-                .idSession(session.getIdSessao())
-                .idAgenda(session.getIdPauta())
-                .openingDate(session.getDataAbertura())
-                .closingDate(session.getDataEncerramento())
+                .idSession(session.getIdSession())
+                .idAgenda(session.getIdAgenda())
+                .openingDate(session.getOpeningDate())
+                .closingDate(session.getClosingDate())
                 .status(session.getStatus())
                 .build();
     }
